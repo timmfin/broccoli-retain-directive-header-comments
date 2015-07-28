@@ -85,6 +85,20 @@ describe('RetainDirectiveHeaderFilter', () => {
 
         filter.processString(header, "bla.coffee").trim().should.equal(expectation);
       });
+
+      // This doesn't work, but when checking our code base, I only found in one
+      // place (https://git.hubteam.com/HubSpot/Content/blob/ddcce9d6fc1795da1a6ac3b17cd829571f540ac8/content_web/static/test/spec/specs.coffee#L3-L6)
+      it('should not mess with existing block comments that do not have directives', () => {
+        let header = dedent`###
+        bla bla bla
+        ###`;
+
+        let expectation = dedent`###
+        bla bla bla
+        ###`;;
+
+        filter.processString(header, "bla.coffee").trim().should.equal(expectation);
+      });
     });
 
     describe('Sass', () => {
