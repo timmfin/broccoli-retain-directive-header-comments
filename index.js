@@ -58,7 +58,8 @@ RetainDirectiveHeaderFilter.prototype.processString = function (content, srcFile
 
       if (this.isQuietComment(extension, line) && isDirective) {
         // console.log('change to block comment', line);
-        headerLines[i] = this.convertQuietToBlockComment(extension, line);
+        headerLines[i] = this.convertQuietToOpeningBlockComment(extension, line);
+        headerLines[i] = this.appendClosingBlockComment(extension, headerLines[i]);
 
       } else if (this.isOnlyClosingBlockComment(extension, line)) {
         headerLines[i] = "";
@@ -117,11 +118,11 @@ RetainDirectiveHeaderFilter.prototype.isOnlyClosingBlockComment = function(exten
   }
 }
 
-RetainDirectiveHeaderFilter.prototype.convertQuietToBlockComment = function(extension, headerLine) {
+RetainDirectiveHeaderFilter.prototype.convertQuietToOpeningBlockComment = function(extension, headerLine) {
   if (extension === '.sass' || extension === '.scss') {
-    return headerLine.replace(QUIET_SASS_COMMENT_LINE, "$1/*$3 */");
+    return headerLine.replace(QUIET_SASS_COMMENT_LINE, "$1/*$3");
   } else if (extension === '.coffee') {
-    return headerLine.replace(QUIET_COFFEE_COMMENT_LINE, "$1###$3 ###");
+    return headerLine.replace(QUIET_COFFEE_COMMENT_LINE, "$1###$3");
   } else {
     throw new Error("Unknown filetype for RetainDirectiveHeaderFilter: \"" + extension + "\"");
   }
