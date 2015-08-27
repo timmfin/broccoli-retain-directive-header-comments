@@ -2,7 +2,7 @@
 
 Broccoli plugin that converts "regular" comments in CoffeeScript and SASS into block comments, so they are retained after transpilation.
 
-I'm using this in conjunction with https://github.com/timmfin/sprockets-directive-loader so that Sprockets-style directive comments (like `#= require ...`) are still available in the compiled JS and CSS output.
+I'm using this in conjunction with [sprockets-directive-loader](https://github.com/timmfin/sprockets-directive-loader) so that Sprockets-style directive comments (like `#= require ...`) are still available in the compiled JS and CSS output.
 
 _Note, this is not 100% perfect. There is (at least) one case I know doesn't work that I'm intentionally ignoring for now. [See the ignored test](https://github.com/timmfin/broccoli-retain-directive-header-comments/blob/53c0852dabc6f037ec95debdbdffa01086375c49/test.js#L103-L114).
 
