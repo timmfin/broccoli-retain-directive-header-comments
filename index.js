@@ -57,7 +57,6 @@ RetainDirectiveHeaderFilter.prototype.processString = function (content, srcFile
           isDirective = DIRECTIVE_PATTERN.test(line);
 
       if (this.isQuietComment(extension, line) && isDirective) {
-        // console.log('change to block comment', line);
         headerLines[i] = this.convertQuietToOpeningBlockComment(extension, line);
         headerLines[i] = this.appendClosingBlockComment(extension, headerLines[i]);
 
@@ -71,9 +70,6 @@ RetainDirectiveHeaderFilter.prototype.processString = function (content, srcFile
       } else if (isDirective) {
         headerLines[i] = this.prependOpeningBlockComment(extension, line);
         headerLines[i] = this.appendClosingBlockComment(extension, headerLines[i]);
-
-      } else {
-        // console.log('huh?', line);
       }
     }
   }

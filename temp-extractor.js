@@ -32,25 +32,9 @@ function processFiles(fileContentByFilename) {
 
       if (modifedHeader && modifedHeader !== header) {
         modifedHeaderByFilename[filename] = modifedHeader;
-
-        // try {
-        //   if (extension === '.coffee') {
-        //     CoffeeScript.compile(modifedHeader)
-        //   } else if (extension === '.sass' || extension === '.scss') {
-        //     sass.renderSync({
-        //       data: modifedHeader
-        //     })
-        //   }
-        //   process.stdout.write('.');
-        // } catch (e) {
-        //   console.error(e)
-        //   headerWithErrorByFilename[filename] = modifedHeader;
-        // }
       }
     }
   });
-
-  // console.log("modifedHeaderByFilename", modifedHeaderByFilename);
 
   console.log("\n\nModified headers:\n\n\n");
   console.log(Object.keys(modifedHeaderByFilename).map((filename) => {
@@ -58,12 +42,6 @@ function processFiles(fileContentByFilename) {
       return `>> ${filename}:\n\n${modifedHeaderByFilename[filename]}\n`
     }
   }).filter((s) => !!s).join('\n'));
-
-  // console.log("\n\nModified headers with errors:\n\n\n");
-  // console.log(Object.keys(headerWithErrorByFilename).map((filename) => {
-  //   return `>> ${filename}:\n\n${headerWithErrorByFilename[filename]}\n`
-  // }).join('\n'));
-
 }
 
 
