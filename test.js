@@ -99,10 +99,7 @@ describe('RetainDirectiveHeaderFilter', () => {
       });
 
 
-
-      // This doesn't work, but when checking our whole HubSpot code base, I only
-      // found it in one place
-      xit('should not mess with existing block comments that do not have directives', () => {
+      it('should not mess with existing block comments that do not have directives', () => {
         let header = dedent`###
         bla bla bla
         ###`;
@@ -110,6 +107,23 @@ describe('RetainDirectiveHeaderFilter', () => {
         let expectation = dedent`###
         bla bla bla
         ###`;;
+
+        filter.processString(header, "bla.coffee").trim().should.equal(expectation);
+      });
+
+      // This doesn't work, but when checking our whole HubSpot code base, I only
+      // found it in one place
+      xit('should not mess with existing block comments that do not have directives (alongside those that do)', () => {
+        let header = dedent`###
+        bla bla bla
+        #= require ./three.js
+        ###`;
+
+        let expectation = dedent`###
+        bla bla bla
+        ###
+        ###= require ./three.js ###
+        `;
 
         filter.processString(header, "bla.coffee").trim().should.equal(expectation);
       });

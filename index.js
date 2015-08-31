@@ -7,6 +7,7 @@ var cloneRegexp = require('clone-regexp');
 
 var HEADER_PATTERN = /^(?:\s*((?:\/[*](?:\s*|.+?)*?[*]\/)|(?:\#\#\#\n(?:[\s\S]*)\n\#\#\#)|(?:\/\/.*\n?)+|(?:\#.*\n?)+)*)*/m;
 var DIRECTIVE_PATTERN = /^(\W*=)\s*(\w+)\s*(.*?)(\*\/)?$/; // not global so we don't have to clone it
+var DIRECTIVE_PATTERN_MULTILINE = /^(\W*=)\s*(\w+)\s*(.*?)(\*\/)?$/m;
 var BLANK_LINE = /^\s*$/g;
 
 var QUIET_COFFEE_COMMENT_LINE = /^(\s*)(#)(?!##)(.*)$/;
@@ -48,10 +49,12 @@ RetainDirectiveHeaderFilter.prototype.processString = function (content, srcFile
   // Extract out all the directives from the header (directives can only appear
   // at the top of the file)
   var header = this.extractHeader(content);
-  var headerLines = (header || "").split("\n");
+  var modifiedHeader;
+  var hasAnyDirectives = DIRECTIVE_PATTERN_MULTILINE.test(header);
 
+  if (hasAnyDirectives) {
+    var headerLines = (header || "").split("\n");
 
-  if (headerLines.length > 0) {
     for (var i = 0; i <= headerLines.length; i++) {
       var line = headerLines[i],
           isDirective = DIRECTIVE_PATTERN.test(line);
@@ -72,12 +75,12 @@ RetainDirectiveHeaderFilter.prototype.processString = function (content, srcFile
         headerLines[i] = this.appendClosingBlockComment(extension, headerLines[i]);
       }
     }
+
+    modifiedHeader = headerLines.join('\n');
   }
 
-  var modifiedHeader = headerLines.join('\n');
-
   // If the header was modified, splice it in. Otherwise return the original content
-  if (modifiedHeader !== header) {
+  if (modifiedHeader !== undefined && modifiedHeader !== header) {
     return content.replace(header, modifiedHeader);
   } else {
     return content;
