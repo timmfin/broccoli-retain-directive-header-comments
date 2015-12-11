@@ -4,7 +4,7 @@
   "main": "index.js",
   "author": "tfinley@hubspot.com",
   "dependencies": {
-    "broccoli-filter": "^0.1.12",
+    "broccoli-filter": "~ 1.2.12",
     "clone-regexp": "^1.0.0"
   },
   "devDependencies": {
